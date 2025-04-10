@@ -20,6 +20,23 @@ public class Tile {
     }
 
     boolean addNeighbor(Tile neighbor) {
-        return neighbors.add(neighbor);
+        boolean differentRow = row != neighbor.row;
+        boolean differentCol = col != neighbor.col;
+        boolean diagonal = differentRow && differentCol;
+
+        int deltaRow = Math.abs(row - neighbor.row);
+        int deltaCol = Math.abs(col - neighbor.col);
+        int delta = deltaRow + deltaCol;
+
+        if(delta == 1 && !diagonal) {
+            neighbors.add(neighbor);
+            return true;
+        } else if(delta == 2 && diagonal) {
+            neighbors.add(neighbor);
+            return true;
+        } else {
+            return false;
+        }
+
     }
 }
