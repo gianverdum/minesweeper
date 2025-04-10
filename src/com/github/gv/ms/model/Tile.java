@@ -10,9 +10,9 @@ public class Tile {
     private final int row;
     private final int col;
 
-    private boolean isOpen;
-    private boolean hasMine;
-    private boolean hasFlag;
+    private boolean openStatus;
+    private boolean mineStatus;
+    private boolean flagStatus;
 
     private List<Tile> neighbours = new ArrayList<Tile>();
 
@@ -43,16 +43,16 @@ public class Tile {
     }
 
     void changeFlag() {
-        if(!isOpen) {
-            hasFlag = !hasFlag;
+        if(!openStatus) {
+            flagStatus = !flagStatus;
         }
     }
 
     boolean open() {
-        if(!isOpen && !hasFlag) {
-            isOpen = true;
+        if(!openStatus && !flagStatus) {
+            openStatus = true;
 
-            if(hasMine) {
+            if(mineStatus) {
                 throw new ExplosionException();
             }
 
@@ -66,6 +66,18 @@ public class Tile {
     }
 
     boolean safeNeighbours() {
-        return neighbours.stream().noneMatch(n -> n.hasMine);
+        return neighbours.stream().noneMatch(n -> n.mineStatus);
+    }
+
+    void setMine() {
+        mineStatus = true;
+    }
+
+    public boolean isOpen() {
+        return openStatus;
+    }
+
+    public boolean hasFlag() {
+        return flagStatus;
     }
 }
