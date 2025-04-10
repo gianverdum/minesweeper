@@ -1,5 +1,7 @@
 package com.github.gv.ms.model;
 
+import com.github.gv.ms.exception.ExplosionException;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,5 +40,32 @@ public class Tile {
             return false;
         }
 
+    }
+
+    void changeFlag() {
+        if(!isOpen) {
+            hasFlag = !hasFlag;
+        }
+    }
+
+    boolean open() {
+        if(!isOpen && !hasFlag) {
+            isOpen = true;
+
+            if(hasMine) {
+                throw new ExplosionException();
+            }
+
+            if(safeNeighbours()) {
+                neighbours.forEach(Tile::open);
+            }
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    boolean safeNeighbours() {
+        return neighbours.stream().noneMatch(n -> n.hasMine);
     }
 }
