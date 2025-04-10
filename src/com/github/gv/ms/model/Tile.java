@@ -80,4 +80,42 @@ public class Tile {
     public boolean hasFlag() {
         return flagStatus;
     }
+
+    public int getRow() {
+        return row;
+    }
+
+    public int getCol() {
+        return col;
+    }
+
+    boolean goalAchieved() {
+        boolean revealed = !mineStatus && openStatus;
+        boolean safe = mineStatus && flagStatus;
+        return revealed || safe;
+    }
+
+    long minesOnNeighbourhood() {
+        return neighbours.stream().filter(n -> n.mineStatus).count();
+    }
+
+    void reset() {
+        openStatus = false;
+        mineStatus = false;
+        flagStatus = false;
+    }
+
+    public String toString() {
+        if(flagStatus) {
+            return "x";
+        } else if(openStatus && mineStatus) {
+            return "*";
+        } else if(openStatus && minesOnNeighbourhood() > 0) {
+            return Long.toString(minesOnNeighbourhood());
+        } else if(openStatus) {
+            return "";
+        } else {
+            return "?";
+        }
+    }
 }
