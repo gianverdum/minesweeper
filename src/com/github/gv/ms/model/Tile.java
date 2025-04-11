@@ -81,6 +81,10 @@ public class Tile {
         return flagStatus;
     }
 
+    public boolean hasMine() {
+        return mineStatus;
+    }
+
     public int getRow() {
         return row;
     }

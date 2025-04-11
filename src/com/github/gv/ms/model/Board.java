@@ -2,6 +2,7 @@ package com.github.gv.ms.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Predicate;
 
 public class Board {
 
@@ -21,6 +22,20 @@ public class Board {
         sortMines();
     }
 
+    public void open(int row, int col) {
+        tiles.parallelStream()
+                .filter(t -> t.getRow() == row && t.getCol() == col)
+                .findFirst()
+                .ifPresent(t -> t.open());
+    }
+
+    public void flag(int row, int col) {
+        tiles.parallelStream()
+                .filter(t -> t.getRow() == row && t.getCol() == col)
+                .findFirst()
+                .ifPresent(t -> t.changeFlag());
+    }
+
     private void generateTiles() {
         for (int r = 0; r < rows; r++) {
             for (int c = 0; c < cols; c++) {
@@ -38,7 +53,39 @@ public class Board {
     }
 
     private void sortMines() {
+        long armedMines = 0;
+        Predicate<Tile> hasMine = t -> t.hasMine();
 
+        do {
+            armedMines = tiles.stream().filter(hasMine).count();
+            int random = (int) (Math.random() * tiles.size());
+            tiles.get(random).setMine();
+        } while (armedMines < mines);
+    }
+
+    public boolean goalAchieved() {
+        return tiles.stream().allMatch(Tile::goalAchieved);
+    }
+
+    public void reset() {
+        tiles.stream().forEach(Tile::reset);
+        sortMines();
+    }
+
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        int i = 0;
+        for (int r = 0; r < rows; r++) {
+            for (int c = 0; c < cols; c++) {
+                sb.append(" ");
+                sb.append(tiles.get(i).toString());
+                sb.append(" ");
+                i++;
+            }
+            sb.append("\n");
+        }
+
+        return sb.toString();
     }
 
 }
