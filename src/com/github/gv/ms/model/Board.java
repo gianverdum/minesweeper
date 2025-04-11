@@ -81,8 +81,19 @@ public class Board {
 
     public String toString() {
         StringBuilder sb = new StringBuilder();
+
+        sb.append("  ");
+        for (int c = 0; c < cols; c++) {
+            sb.append(" ");
+            sb.append(c);
+            sb.append(" ");
+        }
+        sb.append("\n");
+
         int i = 0;
         for (int r = 0; r < rows; r++) {
+            sb.append(r);
+            sb.append(" ");
             for (int c = 0; c < cols; c++) {
                 sb.append(" ");
                 sb.append(tiles.get(i).toString());
