@@ -73,6 +73,10 @@ public class Tile {
         mineStatus = true;
     }
 
+    void setOpen(boolean open) {
+        openStatus = open;
+    }
+
     public boolean isOpen() {
         return openStatus;
     }

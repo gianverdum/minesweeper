@@ -1,5 +1,7 @@
 package com.github.gv.ms.model;
 
+import com.github.gv.ms.exception.ExplosionException;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
@@ -23,10 +25,15 @@ public class Board {
     }
 
     public void open(int row, int col) {
-        tiles.parallelStream()
-                .filter(t -> t.getRow() == row && t.getCol() == col)
-                .findFirst()
-                .ifPresent(t -> t.open());
+        try {
+            tiles.parallelStream()
+                    .filter(t -> t.getRow() == row && t.getCol() == col)
+                    .findFirst()
+                    .ifPresent(t -> t.open());
+        } catch (ExplosionException e) {
+            tiles.forEach(t -> t.setOpen(true));
+            throw e;
+        }
     }
 
     public void flag(int row, int col) {
