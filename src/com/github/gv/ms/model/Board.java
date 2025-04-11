@@ -64,9 +64,9 @@ public class Board {
         Predicate<Tile> hasMine = t -> t.hasMine();
 
         do {
-            armedMines = tiles.stream().filter(hasMine).count();
             int random = (int) (Math.random() * tiles.size());
             tiles.get(random).setMine();
+            armedMines = tiles.stream().filter(hasMine).count();
         } while (armedMines < mines);
     }
 

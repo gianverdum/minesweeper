@@ -47,7 +47,7 @@ public class BoardConsole {
 
             while (!board.goalAchieved()) {
                 System.out.println(board);
-                String input = getInput("Digite (x,y): ");
+                String input = getInput("Type (x,y): ");
 
                 Iterator<Integer> xy = Arrays.stream(input.split(","))
                         .map(e -> Integer.parseInt(e.trim()))
@@ -62,6 +62,7 @@ public class BoardConsole {
                 }
 
             }
+            System.out.println(board);
             System.out.println("You win!");
         } catch (ExplosionException e) {
             System.out.println(board);
